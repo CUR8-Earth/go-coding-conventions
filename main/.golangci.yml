@@ -1,0 +1,58 @@
+version: "2"
+run:
+  modules-download-mode: readonly
+  timeout: 5m
+linters:
+  default: standard
+  enable:
+    # Check that HTTP response bodies are closed.
+    - bodyclose
+    # Check errors are not ignored.
+    - errcheck
+    # Check errors are wrapped.
+    - errorlint
+    # Ensure all comments have a full stop.
+    - godot
+    # Inspect code for security vulnerabilities.
+    - gosec
+    # Inspect code for invalid/suspicious constructs.
+    - govet
+    # Detect unused assignments.
+    - ineffassign
+    # Ensure that returned SQL rows are closed.
+    - sqlclosecheck
+    # Check for common bugs and performance issues.
+    - staticcheck
+    # Check for unused code.
+    - unused
+  exclusions:
+    rules:
+      # Ignore checking for hard-coded credentials in the config folder, as it's prone to
+      # false positives.
+      - path: config
+        linters:
+          - gosec
+        text: "G101"
+      # Ignore checking for hard-coded credentials in the tests, as we often use dummy API
+      # keys for request authorisation.
+      - path: _test.go
+        linters:
+          - gosec
+        text: "G101"
+
+  settings:
+    godot:
+      scope: all
+      capital: true
+    staticcheck:
+      checks:
+        - ST1003
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+formatters:
+  enable:
+    # Check formatting has run.
+    - gofmt
+    # Check import orders are correct.
+    - goimports
