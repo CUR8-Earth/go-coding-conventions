@@ -18,6 +18,23 @@ jobs:
         with:
           go-version: 1.25
 
+      - name: Configure SSH access to fetch go-coding-conventions
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent_conventions.sock
+        run: |
+          mkdir -p ~/.ssh
+          cat dockerfiles/github.known_hosts > ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.GO_CODING_CONVENTIONS_PRIVATE_KEY }}"
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $GITHUB_ENV
+
+      - name: Download shared golangci config
+        run: |
+          git clone git@github.com:CUR8-Earth/go-coding-conventions.git /tmp/go-coding-conventions
+          cp /tmp/go-coding-conventions/.golangci.yml .golangci.yml
+          echo "Copied .golangci.yml:"
+          cat .golangci.yml
+
       - name: Lint
         uses: golangci/golangci-lint-action@v8
         with:
