@@ -1,0 +1,24 @@
+name: Go lint (shared)
+
+on:
+  workflow_call:
+    secrets:
+      GO_CODING_CONVENTIONS_PRIVATE_KEY:
+        required: true
+
+jobs:
+  golangci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.25
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.5.0
