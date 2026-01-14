@@ -33,7 +33,6 @@ jobs:
           git clone git@github.com:CUR8-Earth/go-coding-conventions.git /tmp/go-coding-conventions
           cp /tmp/go-coding-conventions/.golangci.yml .golangci.yml
           echo "Copied .golangci.yml:"
-          cat .golangci.yml
 
       - name: Lint
         uses: golangci/golangci-lint-action@v8
