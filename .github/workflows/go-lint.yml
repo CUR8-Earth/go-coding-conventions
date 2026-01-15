@@ -27,6 +27,14 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.GO_CODING_CONVENTIONS_PRIVATE_KEY }}"
           echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $GITHUB_ENV
+      
+      - name: Configure Git to use SSH for Private Modules
+        run: |
+          git config --global url."git@github.com:CUR8-Earth".insteadOf "https://github.com/CUR8-Earth"
+
+      - name: Setup Private Go Modules
+        run: |
+          echo "GOPRIVATE=github.com/CUR8-Earth/*" >> $GITHUB_ENV
 
       - name: Download shared golangci config
         run: |
