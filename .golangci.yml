@@ -25,6 +25,8 @@ linters:
     - staticcheck
     # Check for unused code.
     - unused
+    # Check exhaustiveness of enum switch statements.
+    - exhaustive
   exclusions:
     rules:
       # Ignore checking for hard-coded credentials in the config folder, as it's prone to
